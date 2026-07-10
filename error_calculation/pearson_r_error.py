@@ -6,7 +6,7 @@ from scipy.stats import pearsonr
 import json 
 import time
 
-file_path = "data/archive_skillcorner/1886347/extracted_player_tracking.json"
+file_path = "data/archive_skillcorner/1899585/extracted_player_tracking.json"
 all_tracking_data = []
 
 # Load the JSON

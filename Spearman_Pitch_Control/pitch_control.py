@@ -19,23 +19,22 @@ def time_to_intercept(px, py, vx, vy):
 
     return np.maximum(tau, 1e-6)
 
-def pitch_control_frame(home_players, away_players):
+def pitch_control_frame(home_players, away_players, beta_val):
     home_w = np.zeros((grid_nx, grid_ny))
     away_w = np.zeros((grid_nx, grid_ny))
 
     for p in home_players:
         tau     = time_to_intercept(p['px'], p['py'],
                                      p['vx'], p['vy'])
-        home_w += tau ** (-beta)
+        home_w += tau ** (-beta_val)
 
     for p in away_players:
         tau     = time_to_intercept(p['px'], p['py'],
                                      p['vx'], p['vy'])
-        away_w += tau ** (-beta)
+        away_w += tau ** (-beta_val)
 
     total = home_w + away_w
-    total = np.where(total == 0, 1e-9, total)   # safety
-
+    total = np.where(total == 0, 1e-9, total)
     return home_w / total
 
 def compute_mae_map(PC_filter, PC_star):

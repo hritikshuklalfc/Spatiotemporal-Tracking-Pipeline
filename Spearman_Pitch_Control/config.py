@@ -1,5 +1,5 @@
 #----------Data Path-----------#
-match_id = "1886347"
+match_id = "1899585"
 base_path = f"data/archive_skillcorner/{match_id}"
 
 match_json = f"{base_path}/{match_id}_match.json"
@@ -12,8 +12,19 @@ pitch_len = 104.0
 pitch_width = 68.0
 
 #---------Team ID-----------#
-home_team_id = 4177
-away_team_id = 1805
+import json
+
+
+def _load_team_ids():
+	try:
+		with open(match_json) as f:
+			match = json.load(f)
+		return match["home_team"]["id"], match["away_team"]["id"]
+	except Exception:
+		return 4177, 1805
+
+
+home_team_id, away_team_id = _load_team_ids()
 
 #--------Tracking Sample Rate-------------#
 fps = 10
@@ -44,7 +55,7 @@ kf_r_std = fps
 #-------------Pitch Control Model--------------#
 vmax = 8.0
 tr = 0.7
-beta = 2.5
+beta = [2.3, 2.5, 2.7]
 
 grid_nx = 52
 grid_ny = 34

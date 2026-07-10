@@ -4,6 +4,7 @@ import numpy as np
 import time
 
 # ── Local modules ──────────────────────────────────────────────────────────
+from config       import beta
 from loader        import (load_player_team_map, load_tracking,
                             load_active_frame, build_frame_index)
 from filters       import compute_all_filters, inject_noise, build_ground_truth
@@ -102,58 +103,68 @@ def main():
 
 
     # ──────────────────────────────────────────────────────────
-    # STEP 6 — TABLE II + FIGURES 2, 3: pitch control
+    # STEP 6 — TABLE II + TABLE III: pitch control distortion
+    #           Table II  = results at default beta (2.5)
+    #           Table III = sensitivity across all three beta values
     # ──────────────────────────────────────────────────────────
-    print("\n── STEP 6: Table II — Pitch Control Distortion ──────")
+    print("\n── STEP 6: Pitch Control Distortion ─────────────────")
 
     FILTER_NAMES = ['moving_avg', 'savitzky_golay',
                     'butterworth', 'kalman']
-    mae_map_accum = {f: [] for f in FILTER_NAMES}
-
-    # Store last frame's surfaces for plotting
-    PC_star_last  = None
-    PC_filter_last = {f: None for f in FILTER_NAMES}
-
-    for frame_num in active_frames:
-        if frame_num not in frame_to_idx:
-            continue
-        fidx = frame_to_idx[frame_num]
-
-        # Ground truth surface
-        h_gt, a_gt = build_player_list(
-            tracking, player_team, fidx, 'ground_truth', vel_cache)
-        if h_gt is None:
-            continue
-
-        PC_star = pitch_control_frame(h_gt, a_gt)
-        PC_star_last = PC_star
-
-        # Each filter's surface
-        for fname in FILTER_NAMES:
-            h_f, a_f = build_player_list(
-                tracking, player_team, fidx, fname, vel_cache)
-            if h_f is None:
-                continue
-            PC_f = pitch_control_frame(h_f, a_f)
-            mae  = compute_mae_map(PC_f, PC_star)
-            mae_map_accum[fname].append(mae)
-            PC_filter_last[fname] = PC_f
-
-    # Print Table II
     LABELS = {
         'moving_avg'     : 'Moving Average',
         'savitzky_golay' : 'Savitzky-Golay',
         'butterworth'    : 'Butterworth (2Hz)',
         'kalman'         : 'Kalman (CV)',
     }
+
+    # beta is a list e.g. [2.3, 2.5, 2.7] — imported from config
+    # We store results per beta value
+    all_beta_results = {}   # {beta_val -> {filter_name -> [mae values]}}
+
+    PC_star_last   = None
+    PC_filter_last = {f: None for f in FILTER_NAMES}
+
+    for beta_val in beta:
+        mae_map_accum = {f: [] for f in FILTER_NAMES}
+
+        for frame_num in active_frames:
+            if frame_num not in frame_to_idx:
+                continue
+            fidx = frame_to_idx[frame_num]
+
+            # Ground truth surface at this beta value
+            h_gt, a_gt = build_player_list(
+                tracking, player_team, fidx, 'ground_truth', vel_cache)
+            if h_gt is None:
+                continue
+
+            # Pass beta_val explicitly — single float
+            PC_star = pitch_control_frame(h_gt, a_gt, beta_val)
+            PC_star_last = PC_star
+
+            for fname in FILTER_NAMES:
+                h_f, a_f = build_player_list(
+                    tracking, player_team, fidx, fname, vel_cache)
+                if h_f is None:
+                    continue
+                PC_f = pitch_control_frame(h_f, a_f, beta_val)
+                mae  = compute_mae_map(PC_f, PC_star)
+                mae_map_accum[fname].append(mae)
+                PC_filter_last[fname] = PC_f
+
+        all_beta_results[beta_val] = mae_map_accum
+
+    # ── Print Table II — default beta only (2.5) ──────────────
+    default_beta = 2.5
     print("\n" + "=" * 55)
-    print("TABLE II — Pitch-Control Map Distortion (MAEmap)")
+    print(f"TABLE II — Pitch-Control Distortion (β = {default_beta})")
     print("=" * 55)
     print(f"{'Filter':<22} {'Mean MAEmap':>12} {'Std':>10}")
     print("-" * 55)
     mae_map_means = {}
     for fname in FILTER_NAMES:
-        vals = mae_map_accum[fname]
+        vals = all_beta_results[default_beta][fname]
         if vals:
             m = np.mean(vals)
             s = np.std(vals)
@@ -163,6 +174,25 @@ def main():
             print(f"{LABELS[fname]:<22} {'N/A':>12}")
     print("=" * 55)
 
+    # ── Print Table III — beta sensitivity ────────────────────
+    print("\n" + "=" * 70)
+    print("TABLE III — MAEmap Sensitivity to β")
+    print("=" * 70)
+    header = f"{'Filter':<22}"
+    for b in beta:
+        header += f"  β={b}"
+    print(header)
+    print("-" * 70)
+    for fname in FILTER_NAMES:
+        row = f"{LABELS[fname]:<22}"
+        for b in beta:
+            vals = all_beta_results[b][fname]
+            if vals:
+                row += f"  {np.mean(vals):.4f}"
+            else:
+                row += f"  {'N/A':>6}"
+        print(row)
+    print("=" * 70)
 
     # ──────────────────────────────────────────────────────────
     # STEP 7 — FIGURE 2: pitch control surface
@@ -180,7 +210,6 @@ def main():
     # ──────────────────────────────────────────────────────────
     print("\n── STEP 8: Figure 3 ─────────────────────────────────")
 
-    # Compare the filter with best and worst MAEmap
     if mae_map_means:
         best_filter  = min(mae_map_means, key=mae_map_means.get)
         worst_filter = max(mae_map_means, key=mae_map_means.get)
@@ -198,7 +227,6 @@ def main():
               f"(MAEmap={mae_map_means[best_filter]:.4f})")
         print(f"[main] Worst filter: {LABELS[worst_filter]} "
               f"(MAEmap={mae_map_means[worst_filter]:.4f})")
-
 
     # ──────────────────────────────────────────────────────────
     # STEP 9 — FIGURE 4: Pareto scatter
