@@ -80,7 +80,7 @@ def run_single_match(match_id):
 
     # FIX: Check if the tracking file is empty to prevent an IndexError
     if not tracking:
-        print(f"  [SKIP] Match {match_id} tracking file is empty or invalid.")
+        print(f"[SKIP] Match {match_id} tracking file is empty or invalid.")
         return None
 
     # ── Load active frames ────────────────────────────────────
