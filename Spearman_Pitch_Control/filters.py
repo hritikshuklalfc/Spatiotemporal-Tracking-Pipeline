@@ -65,42 +65,54 @@ def filter_butterworth(x_noisy, y_noisy,
 def filter_kalman(x_noisy, y_noisy,
                    q_std=kf_q_std,
                    r_std=kf_r_std):
+    """
+    Steady-state constant-velocity Kalman filter.
+    Pre-computes gain K over 50 warm-up iterations then
+    reuses it — valid for time-invariant systems.
+    Substantially faster than per-frame matrix inversion
+    while producing near-identical output.
+    """
+    F = np.array([[1,0,dt,0],[0,1,0,dt],
+                  [0,0,1,0],[0,0,0,1]], dtype=float)
+    H = np.array([[1,0,0,0],[0,1,0,0]], dtype=float)
+    Q = np.eye(4) * q_std**2
+    R = np.eye(2) * r_std**2
 
-    n = len(x_noisy)
+    # Warm-up: converge to steady-state gain
+    P = np.eye(4)
+    for _ in range(50):
+        P = F @ P @ F.T + Q
+        S = H @ P @ H.T + R
+        K = P @ H.T @ np.linalg.inv(S)
+        P = (np.eye(4) - K @ H) @ P
 
-    F = np.array([[1, 0, dt, 0],
-                  [0, 1, 0, dt],
-                  [0, 0, 1,  0],
-                  [0, 0, 0,  1]], dtype=float)
+    # Scalar extraction for speed
+    k = K  # shape (4,2)
 
-    H = np.array([[1, 0, 0, 0],
-                  [0, 1, 0, 0]], dtype=float)
-
-    Q = np.eye(4) * q_std ** 2  
-    R = np.eye(2) * r_std ** 2  
-
-    state = np.array([x_noisy[0], y_noisy[0], 0.0, 0.0])
-    P     = np.eye(4)
-
+    # Main loop — no matrix inversion
+    cx, cy, cvx, cvy = x_noisy[0], y_noisy[0], 0.0, 0.0
     xs, ys = [], []
 
-    for i in range(n):
-        state = F @ state
-        P     = F @ P @ F.T + Q
+    for i in range(len(x_noisy)):
+        px  = cx + cvx*dt
+        py  = cy + cvy*dt
+        pvx = cvx
+        pvy = cvy
 
-        z     = np.array([x_noisy[i], y_noisy[i]])
-        y_res = z - H @ state                 
-        S     = H @ P @ H.T + R               
-        K     = P @ H.T @ np.linalg.inv(S)    
-        state = state + K @ y_res
-        P     = (np.eye(4) - K @ H) @ P
+        rx = x_noisy[i] - px
+        ry = y_noisy[i] - py
 
-        xs.append(state[0])
-        ys.append(state[1])
+        cx  = px  + k[0,0]*rx + k[0,1]*ry
+        cy  = py  + k[1,0]*rx + k[1,1]*ry
+        cvx = pvx + k[2,0]*rx + k[2,1]*ry
+        cvy = pvy + k[3,0]*rx + k[3,1]*ry
+
+        xs.append(cx)
+        ys.append(cy)
 
     x_kf = np.array(xs)
     y_kf = np.array(ys)
-    return _velocity(x_kf, y_kf)
+    return np.diff(x_kf)/dt, np.diff(y_kf)/dt
 
 def compute_all_filters(x_clean, y_clean):
     x = np.array(x_clean, dtype=float)

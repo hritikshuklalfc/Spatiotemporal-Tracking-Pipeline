@@ -4,16 +4,16 @@ import numpy as np
 import time
 
 # ── Local modules ──────────────────────────────────────────────────────────
-from config       import beta
-from loader        import (load_player_team_map, load_tracking,
+from config import beta
+from loader import (load_player_team_map, load_tracking,
                             load_active_frame, build_frame_index)
-from filters       import compute_all_filters, inject_noise, build_ground_truth
-from filters       import (filter_moving_average, filter_savitzky_golay,
+from filters import compute_all_filters, inject_noise, build_ground_truth
+from filters import (filter_moving_average, filter_savitzky_golay,
                             filter_butterworth, filter_kalman)
 from pitch_control import time_filter, build_table_one
 from pitch_control import (pitch_control_frame, compute_mae_map,
                             build_player_list)
-from visualiser     import (plot_fig1_velocity_comparison,
+from visualiser import (plot_fig1_velocity_comparison,
                             plot_fig2_pitch_control,
                             plot_difference_map,
                             plot_pareto_scatter)
@@ -56,9 +56,9 @@ def main():
     x_noisy_ref, y_noisy_ref     = inject_noise(x_star_ref, y_star_ref)
 
     timing = {
-        'moving_avg'     : time_filter(filter_moving_average,
+        'moving_avg': time_filter(filter_moving_average,
                                         x_noisy_ref, y_noisy_ref),
-        'savitzky_golay' : time_filter(filter_savitzky_golay,
+        'savitzky_golay': time_filter(filter_savitzky_golay,
                                         x_noisy_ref, y_noisy_ref),
         'butterworth'    : time_filter(filter_butterworth,
                                         x_noisy_ref, y_noisy_ref),

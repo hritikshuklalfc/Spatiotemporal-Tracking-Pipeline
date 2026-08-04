@@ -6,7 +6,7 @@ from scipy.stats import pearsonr
 import json 
 import time
 
-file_path = "data/archive_skillcorner/1899585/extracted_player_tracking.json"
+file_path = "data/archive_skillcorner/1996435/extracted_player_tracking.json"
 all_tracking_data = []
 
 # Load the JSON
@@ -221,23 +221,59 @@ v_bw_test = np.sqrt(
 t_bw = (time.perf_counter() - t0) * extrapolate
 
 #4. Kalman Filter
-t0 = time.perf_counter()
+# --- FULLY UNROLLED MAIN LOOP ---
 states = np.zeros((len(x_noise), 4))
-x_k = np.array([x_noise[0], y_noise[0], 0, 0])
-P = np.eye(4) * 10
+
+# Extract the Kalman Gain matrix into fast scalar variables
+# 4. Kalman Filter (Optimized Steady-State)
+t0 = time.perf_counter()
+
+# --- PRE-COMPUTE STEADY STATE KALMAN GAIN ---
+P_temp = np.eye(4) * 10
+# Run the equations for 50 iterations to let K converge
+for _ in range(50):
+    P_temp = np.dot(F, np.dot(P_temp, F.T)) + Q
+    S_temp = np.dot(H, np.dot(P_temp, H.T)) + R
+    K_steady = np.dot(P_temp, np.dot(H.T, np.linalg.inv(S_temp)))
+    P_temp = P_temp - np.dot(K_steady, np.dot(H, P_temp))
+
+# --- FULLY UNROLLED MAIN LOOP ---
+states = np.zeros((len(x_noise), 4))
+
+# Extract the Kalman Gain matrix into fast scalar variables
+k11, k12 = K_steady[0, 0], K_steady[0, 1]
+k21, k22 = K_steady[1, 0], K_steady[1, 1]
+k31, k32 = K_steady[2, 0], K_steady[2, 1]
+k41, k42 = K_steady[3, 0], K_steady[3, 1]
+
+# Starting states
+curr_x = x_noise[0]
+curr_y = y_noise[0]
+curr_vx = 0.0
+curr_vy = 0.0
 
 for i in range(len(x_noise)):
-    x_k = np.dot(F, x_k)
-    P = np.dot(F, np.dot(P, F.T)) + Q
-    Z = np.array([x_noise[i], y_noise[i]])
+    # 1. Predict (Equivalent to np.dot(F, x_k))
+    pred_x = curr_x + curr_vx * dt
+    pred_y = curr_y + curr_vy * dt
+    pred_vx = curr_vx
+    pred_vy = curr_vy
     
-    y_res = Z - np.dot(H, x_k)
-    S = np.dot(H, np.dot(P, H.T)) + R
-    K = np.dot(P, np.dot(H.T, np.linalg.inv(S)))
+    # 2. Residual (Equivalent to Z - np.dot(H, x_k))
+    res_x = x_noise[i] - pred_x
+    res_y = y_noise[i] - pred_y
     
-    x_k = x_k + np.dot(K, y_res)
-    P = P - np.dot(K, np.dot(H, P))
-    states[i] = x_k
+    # 3. Update (Equivalent to x_k + np.dot(K_steady, y_res))
+    curr_x = pred_x + k11 * res_x + k12 * res_y
+    curr_y = pred_y + k21 * res_x + k22 * res_y
+    curr_vx = pred_vx + k31 * res_x + k32 * res_y
+    curr_vy = pred_vy + k41 * res_x + k42 * res_y
+    
+    # Store results
+    states[i, 0] = curr_x
+    states[i, 1] = curr_y
+    states[i, 2] = curr_vx
+    states[i, 3] = curr_vy
     
 v_kalman_test = np.sqrt(states[1:, 2]**2 + states[1:, 3]**2)
 t_kalman = (time.perf_counter() - t0) * extrapolate

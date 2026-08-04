@@ -80,7 +80,7 @@ def run_single_match(match_id):
 
     # FIX: Check if the tracking file is empty to prevent an IndexError
     if not tracking:
-        print(f"  [SKIP] Match {match_id} tracking file is empty or invalid.")
+        print(f"[SKIP] Match {match_id} tracking file is empty or invalid.")
         return None
 
     # ── Load active frames ────────────────────────────────────
@@ -300,6 +300,12 @@ def print_cross_match_tables(all_results):
               f"{np.mean(rmses):>10.4f} {np.std(rmses):>8.4f} "
               f"{np.mean(rs):>10.4f}")
     print("=" * 75)
+    
+    # Add after Table IV
+    print("\nTiming (mean across matches):")
+    for fname in FILTER_NAMES:
+        times = [r['timing'][fname] for r in valid if r['timing'][fname] is not None]
+        print(f"  {LABELS[fname]:<22} {np.mean(times):.4f}s")
 
     # ── TABLE V: Pitch control at default beta ─────────────────
     b_key = str(DEFAULT_BETA)
