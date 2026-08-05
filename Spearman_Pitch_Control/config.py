@@ -3,7 +3,7 @@ match_ids = [
     "1886347", "1899585", "1925299", "1953632", "1996435",
     "2006229", "2011166", "2013725", "2015213", "2017461",
 ]
-match_id = "2017461"
+match_id = "1886347"
 base_path = f"data/archive_skillcorner/{match_id}"
 
 match_json = f"{base_path}/{match_id}_match.json"
@@ -54,7 +54,7 @@ bw_order = 4
 bw_fs = fps
 
 kf_q_std = 0.1
-kf_r_std = fps
+kf_r_std = sigma
 
 #-------------Pitch Control Model--------------#
 vmax = 8.0

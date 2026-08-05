@@ -19,7 +19,7 @@ def time_to_intercept(px, py, vx, vy):
 
     return np.maximum(tau, 1e-6)
 
-def pitch_control_frame(home_players, away_players, beta_val):
+def pitch_control_frame(home_players, away_players, beta_val = beta):
     home_w = np.zeros((grid_nx, grid_ny))
     away_w = np.zeros((grid_nx, grid_ny))
 
