@@ -1,11 +1,15 @@
 #----------Data Path-----------#
-match_id = "1899585"
+match_ids = [
+    "1886347", "1899585", "1925299", "1953632", "1996435",
+    "2006229", "2011166", "2013725", "2015213", "2017461",
+]
+match_id = "2017461"
 base_path = f"data/archive_skillcorner/{match_id}"
 
 match_json = f"{base_path}/{match_id}_match.json"
 tracking_json   = f"{base_path}/extracted_player_tracking.json"
 phases_csv      = f"{base_path}/{match_id}_phases_of_play.csv"
-output_dir     = "outputs"
+output_dir     = f"outputs/match_{match_id}"
 
 #---------Pitch Dimensions------------#
 pitch_len = 104.0
