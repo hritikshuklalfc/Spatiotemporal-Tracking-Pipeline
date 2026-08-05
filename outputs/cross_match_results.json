@@ -4,10 +4,10 @@
     "n_players": 29,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 8.944998844526709e-05,
-      "savitzky_golay": 0.000420767004834488,
-      "butterworth": 0.001213141600601375,
-      "kalman": 0.034307791601167995
+      "moving_avg": 8.988360641524196e-05,
+      "savitzky_golay": 0.00043037518626078965,
+      "butterworth": 0.001188808388542384,
+      "kalman": 0.03573635838693008
     },
     "vel_metrics": {
       "moving_avg": {
@@ -93,10 +93,10 @@
     "n_players": 30,
     "n_frames": 24,
     "timing": {
-      "moving_avg": 8.524160366505385e-05,
-      "savitzky_golay": 0.00043061699252575634,
-      "butterworth": 0.001304174802498892,
-      "kalman": 0.033803908596746625
+      "moving_avg": 8.363360539078712e-05,
+      "savitzky_golay": 0.0004045915906317532,
+      "butterworth": 0.0011398582253605127,
+      "kalman": 0.03708942519733682
     },
     "vel_metrics": {
       "moving_avg": {
@@ -182,10 +182,10 @@
     "n_players": 32,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 0.00010221680859103798,
-      "savitzky_golay": 0.00045855820062570276,
-      "butterworth": 0.0013730334059800953,
-      "kalman": 0.038638750003883615
+      "moving_avg": 0.00010399981401860714,
+      "savitzky_golay": 0.00043827500194311143,
+      "butterworth": 0.0013749500270932914,
+      "kalman": 0.038362141384277494
     },
     "vel_metrics": {
       "moving_avg": {
@@ -271,10 +271,10 @@
     "n_players": 30,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 9.080819436348974e-05,
-      "savitzky_golay": 0.00042901679407805207,
-      "butterworth": 0.0013003832078538834,
-      "kalman": 0.0351126249996014
+      "moving_avg": 9.065819904208183e-05,
+      "savitzky_golay": 0.0004251000238582492,
+      "butterworth": 0.0013343086116947233,
+      "kalman": 0.03565740019548684
     },
     "vel_metrics": {
       "moving_avg": {
@@ -360,10 +360,10 @@
     "n_players": 30,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 9.154979488812387e-05,
-      "savitzky_golay": 0.0004358663980383426,
-      "butterworth": 0.0014013166015502065,
-      "kalman": 0.03518652499769814
+      "moving_avg": 9.118340676650405e-05,
+      "savitzky_golay": 0.0004311251919716597,
+      "butterworth": 0.0013726833974942565,
+      "kalman": 0.03520411640638486
     },
     "vel_metrics": {
       "moving_avg": {
@@ -449,10 +449,10 @@
     "n_players": 32,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 9.109980310313403e-05,
-      "savitzky_golay": 0.0004377999983262271,
-      "butterworth": 0.0012696748017333448,
-      "kalman": 0.03533894980791956
+      "moving_avg": 9.178339969366789e-05,
+      "savitzky_golay": 0.00043385857716202734,
+      "butterworth": 0.0013027835986576975,
+      "kalman": 0.035928925208281726
     },
     "vel_metrics": {
       "moving_avg": {
@@ -538,10 +538,10 @@
     "n_players": 32,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 8.110798662528396e-05,
-      "savitzky_golay": 0.00040105819934979083,
-      "butterworth": 0.001158566604135558,
-      "kalman": 0.030821216403273864
+      "moving_avg": 8.155818795785308e-05,
+      "savitzky_golay": 0.0004016167833469808,
+      "butterworth": 0.0011393331922590732,
+      "kalman": 0.031492916599381714
     },
     "vel_metrics": {
       "moving_avg": {
@@ -627,10 +627,10 @@
     "n_players": 30,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 9.419999551028014e-05,
-      "savitzky_golay": 0.00044862500508315863,
-      "butterworth": 0.0012808667961508036,
-      "kalman": 0.03561004180810414
+      "moving_avg": 9.255000622943044e-05,
+      "savitzky_golay": 0.00043176680337637664,
+      "butterworth": 0.0013416334171779455,
+      "kalman": 0.04057466699741781
     },
     "vel_metrics": {
       "moving_avg": {
@@ -716,10 +716,10 @@
     "n_players": 32,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 9.979180758818984e-05,
-      "savitzky_golay": 0.00043936659931205214,
-      "butterworth": 0.001354200195055455,
-      "kalman": 0.03943625000538305
+      "moving_avg": 9.873319650068879e-05,
+      "savitzky_golay": 0.00044525820994749664,
+      "butterworth": 0.0013974666129797698,
+      "kalman": 0.03813467479776591
     },
     "vel_metrics": {
       "moving_avg": {
@@ -805,10 +805,10 @@
     "n_players": 32,
     "n_frames": 25,
     "timing": {
-      "moving_avg": 8.376659825444221e-05,
-      "savitzky_golay": 0.0004087250039447099,
-      "butterworth": 0.0011904915911145509,
-      "kalman": 0.032367883203551176
+      "moving_avg": 8.388317655771971e-05,
+      "savitzky_golay": 0.00040014999685809014,
+      "butterworth": 0.0012201749836094678,
+      "kalman": 0.032871575001627205
     },
     "vel_metrics": {
       "moving_avg": {

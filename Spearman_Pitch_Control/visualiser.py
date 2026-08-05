@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import os
-from config import pitch_len, pitch_width, output_dir
+from config import pitch_len, pitch_width, output_dir, match_id
 
 os.makedirs(output_dir, exist_ok=True)
 
