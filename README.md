@@ -1,80 +1,82 @@
-# Spearman Pitch Control
+# Benchmarking Noise-Reduction Filters for Broadcast Football Tracking Data
 
-This project studies how tracking noise changes football pitch-control estimates. It reconstructs player velocity from raw SkillCorner-style data, applies several filters, and measures both the velocity recovery error and the downstream distortion in pitch-control surfaces.
+This repository contains a data-processing and benchmarking pipeline for evaluating noise-reduction filters on broadcast football tracking data. It reconstructs player velocity from raw SkillCorner-style tracking data, injects synthetic corruption, applies several filtering methods, and measures both:
 
-The paper-level question is simple: which filter does the best job of preserving the football decision model, not just the smoothest-looking trajectory?
+- kinematic velocity-recovery error, and
+- downstream distortion of a Spearman pitch-control surface.
 
-## Brief Paper Summary
+The central question is not simply which filter looks smoother, but which filter best preserves the tactical decision model inferred from the motion data.
 
-The core result is that Kalman filtering gives the best end-to-end trade-off in this setup. It recovers velocity more accurately than the other tested filters and also produces the lowest pitch-control distortion. Simpler filters like moving average are faster, but they preserve the downstream model less well.
+## Key findings
 
-## Repository Architecture
+The pipeline compares:
 
-The code is organised as a small research pipeline rather than a framework:
+- Moving Average
+- Savitzky-Golay
+- 4th-order Butterworth
+- Constant-velocity Kalman filter
 
-- [Spearman_Pitch_Control/config.py](Spearman_Pitch_Control/config.py): match paths, pitch geometry, filter settings, and pitch-control constants.
-- [Spearman_Pitch_Control/loader.py](Spearman_Pitch_Control/loader.py): reads tracking, match metadata, and evaluation frames.
-- [Spearman_Pitch_Control/filters.py](Spearman_Pitch_Control/filters.py): builds the clean velocity baseline, injects synthetic noise, and runs the filters.
-- [Spearman_Pitch_Control/pitch_control.py](Spearman_Pitch_Control/pitch_control.py): builds pitch-control surfaces, computes MAE maps, and prints Table I.
-- [Spearman_Pitch_Control/visualiser.py](Spearman_Pitch_Control/visualiser.py): saves the figures into the outputs folder.
-- [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py): single-match entrypoint used for the main paper tables and figures.
-- [Spearman_Pitch_Control/multi_match.py](Spearman_Pitch_Control/multi_match.py): cross-match runner used for Tables IV to VI and the aggregate JSON output.
-- [helper_files/](helper_files/): utilities for tracking extraction and preprocessing.
-- [error_calculation/](error_calculation/): standalone MAE, RMSE, and Pearson-r helpers.
-- [data/](data/): raw and extracted match data.
-- [outputs/](outputs/): generated figures, tables, and cross-match results.
+In this noise regime, Moving Average performs best overall. It achieves strong velocity-recovery accuracy, produces lower pitch-control distortion, and does so at a lower computational cost than the alternatives.
 
-## What To Run
+## Repository structure
 
-Run everything from the project root after activating the virtual environment.
+- Spearman_Pitch_Control/config.py: match paths, pitch geometry, filter settings, and pitch-control constants.
+- Spearman_Pitch_Control/loader.py: loads tracking data, match metadata, and evaluation frames.
+- Spearman_Pitch_Control/filters.py: builds the clean velocity baseline, injects synthetic noise, and runs the filters.
+- Spearman_Pitch_Control/pitch_control.py: builds pitch-control surfaces, computes error maps, and generates evaluation tables.
+- Spearman_Pitch_Control/visualiser.py: creates analytical figures and saves them to disk.
+- Spearman_Pitch_Control/main.py: single-match entry point for the main paper tables and figures.
+- Spearman_Pitch_Control/multi_match.py: cross-match runner for aggregated statistics and JSON outputs.
+- helper_files/: utilities for tracking extraction and preprocessing.
+- error_calculation/: standalone helpers for MAE, RMSE, and Pearson-r analysis.
+- outputs/: generated tables, figures, and match-specific results.
+
+## Pipeline overview
+
+1. Load match data from the SkillCorner archive under data/archive_skillcorner/.
+2. Reconstruct a clean velocity baseline from player tracking.
+3. Inject synthetic Gaussian noise and 8 m displacement spikes to simulate broadcast-style corruption.
+4. Apply the candidate filters.
+5. Compare filtered velocities against the reconstructed ground truth.
+6. Convert the motion into Spearman pitch-control surfaces.
+7. Measure the spatial distortion between filtered and ground-truth pitch-control maps.
+8. Export evaluation tables and figures.
+
+## Quick start
+
+From the project root, activate your virtual environment and run the analysis:
 
 ```bash
 source .venv/bin/activate
-python Spearman_Pitch_Control/main.py
+python3 Spearman_Pitch_Control/main.py
 ```
 
-Use the main pipeline for the single-match paper results. It prints the primary tables and saves the figures.
-
-To run the broader cross-match aggregation, use:
+To run the broader cross-match aggregation:
 
 ```bash
-python Spearman_Pitch_Control/multi_match.py
+source .venv/bin/activate
+python3 Spearman_Pitch_Control/multi_match.py
 ```
 
-## Output Map
+## Outputs
 
-| Runner                                                                         | What it produces                                                     |
-| ------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Table I: velocity recovery RMSE                                      |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Table II: pitch-control distortion at the default beta value         |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Table III: beta sensitivity summary                                  |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Figure 1: raw vs filtered vs ground-truth velocity                   |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Figure 2: ground-truth pitch-control surface                         |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Figure 3: pitch-control difference map                               |
-| [Spearman_Pitch_Control/main.py](Spearman_Pitch_Control/main.py)               | Figure 4: accuracy vs compute trade-off scatter                      |
-| [Spearman_Pitch_Control/multi_match.py](Spearman_Pitch_Control/multi_match.py) | Table IV: cross-match velocity recovery summary                      |
-| [Spearman_Pitch_Control/multi_match.py](Spearman_Pitch_Control/multi_match.py) | Table V: cross-match pitch-control distortion                        |
-| [Spearman_Pitch_Control/multi_match.py](Spearman_Pitch_Control/multi_match.py) | Table VI: ranking consistency across matches                         |
-| [Spearman_Pitch_Control/multi_match.py](Spearman_Pitch_Control/multi_match.py) | [outputs/cross_match_results.json](outputs/cross_match_results.json) |
+The scripts write generated tables and figures to the outputs/ directory. For example, the single-match pipeline produces:
 
-The figures saved by the main runner are written to [outputs/](outputs/), with these default filenames:
+- Table I: velocity recovery RMSE
+- Table II: pitch-control distortion at the default beta value
+- Table III: beta sensitivity summary
+- Figure 1: raw vs filtered vs ground-truth velocity
+- Figure 2: ground-truth pitch-control surface
+- Figure 3: pitch-control difference map
+- Figure 4: accuracy vs compute trade-off scatter
 
-- [outputs/fig1_velocity_comparison.png](outputs/fig1_velocity_comparison.png)
-- [outputs/fig2_pitch_control.png](outputs/fig2_pitch_control.png)
-- [outputs/fig3*diff_Kalman*%28CV%29_vs_Savitzky-Golay.png](outputs/fig3_diff_Kalman_%28CV%29_vs_Savitzky-Golay.png)
-- [outputs/fig4_pareto_scatter.png](outputs/fig4_pareto_scatter.png)
+The multi-match runner additionally produces aggregate cross-match summaries and JSON outputs.
 
-## How The Pipeline Works
+## Data expectations
 
-1. Load match data from [data/archive_skillcorner/](data/archive_skillcorner/).
-2. Reconstruct a clean velocity baseline from player tracking.
-3. Inject synthetic Gaussian noise and spikes to simulate corruption.
-4. Apply moving average, Savitzky-Golay, Butterworth, and Kalman filtering.
-5. Compare the filtered velocity against the reconstructed ground truth.
-6. Convert filtered motion into pitch-control surfaces.
-7. Measure the distortion between the filtered and ground-truth pitch-control maps.
-8. Print the paper tables and save the figures to [outputs/](outputs/).
+The repository expects match data in a structure similar to:
 
-## Notes
+- data/archive_skillcorner/<match_id>/
+- outputs/match_<match_id>/
 
-The default match in the configuration is the one currently used for the single-match pipeline. The multi-match runner is the better entrypoint when you want aggregated statistics across the available matches.
+If you are using a different dataset layout, update the paths in Spearman_Pitch_Control/config.py accordingly.
