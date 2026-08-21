@@ -238,6 +238,31 @@ v_kalman_test = np.sqrt(states[1:, 2]**2 + states[1:, 3]**2)
 def calculate_rmse(truth, filtered):
     return np.sqrt(np.mean((truth - filtered)**2))
 
+
+def compute_segmented_mae(v_true, v_filtered, dt=0.1):
+    """
+    Compute MAE across physical intensity bands.
+
+    v_true and v_filtered are velocity arrays in m/s. The acceleration band
+    is defined from the central-difference acceleration of v_true.
+    """
+    v_true = np.asarray(v_true)
+    v_filtered = np.asarray(v_filtered)
+    a_true = np.gradient(v_true, dt)
+
+    masks = {
+        "Low_Intensity": (v_true >= 0.0) & (v_true <= 4.0),
+        "HSR": (v_true >= 5.5) & (v_true <= 7.0),
+        "Sprinting": v_true > 7.0,
+        "High_Accel": np.abs(a_true) > 3.0,
+    }
+
+    return {
+        band: np.mean(np.abs(v_true[mask] - v_filtered[mask]))
+        if np.any(mask) else np.nan
+        for band, mask in masks.items()
+    }
+
 test_results = {
     "Raw Corrupted Data": v_raw,
     "Moving Average": v_sma_test,
@@ -257,3 +282,22 @@ for name, v_filtered in test_results.items():
     print(f"{name:<22} | {rmse:<12.4f} |")
     
 print("="*55 + "\n")
+
+print("SEGMENTED MAE BY VELOCITY INTENSITY")
+print("="*85)
+print(
+    f"{'Algorithm':<22} | {'Low Intensity':<14} | {'HSR':<12} | "
+    f"{'Sprinting':<14} | {'High Accel':<12} |"
+)
+print("-" * 85)
+
+for name, v_filtered in test_results.items():
+    segmented_mae = compute_segmented_mae(v_star, v_filtered, dt=dt)
+    print(
+        f"{name:<22} | {segmented_mae['Low_Intensity']:<14.4f} | "
+        f"{segmented_mae['HSR']:<12.4f} | "
+        f"{segmented_mae['Sprinting']:<14.4f} | "
+        f"{segmented_mae['High_Accel']:<12.4f} |"
+    )
+
+print("="*85 + "\n")

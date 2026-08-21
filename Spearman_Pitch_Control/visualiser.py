@@ -116,7 +116,7 @@ def plot_pareto_scatter(rmse_scores, timing_scores):
     labels = {
         'moving_avg'     : 'Moving Average',
         'savitzky_golay' : 'Savitzky-Golay',
-        'butterworth'    : 'Butterworth (2Hz)',
+        'butterworth'    : 'Butterworth (1.5Hz)',
         'kalman'         : 'Kalman (CV)',
     }
     colors = {

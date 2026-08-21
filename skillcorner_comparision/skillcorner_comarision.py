@@ -17,19 +17,19 @@ lables = {
     'skillcorner'    : 'SkillCorner (baseline)',
     'moving_avg'     : 'Moving Average',
     'savitzky_golay' : 'Savitzky-Golay',
-    'butterworth'    : 'Butterworth (2Hz)',
+    'butterworth'    : 'Butterworth (1.5Hz)',
     'kalman'         : 'Kalman (CV)',
 }
 
 # filter parameters
 dt = 0.1
-ma_k = 3        
-sg_window = 7
-sg_poly = 3
-bw_fc = 2.0
-bw_order = 4
-kf_q_std = 0.1
-kf_r_std = 0.4
+ma_k = 7
+sg_window = 15
+sg_poly = 2
+bw_fc = 1.5
+bw_order = 2
+kf_q_std = 2.0
+kf_r_std = 1.5
 gt_sg_window = 15    
 gt_sg_poly = 2
 max_gap_fromes = 50   

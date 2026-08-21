@@ -14,7 +14,7 @@ FILTER_NAMES = ['moving_avg', 'savitzky_golay', 'butterworth', 'kalman']
 LABELS = {
     'moving_avg'     : 'Moving Average',
     'savitzky_golay' : 'Savitzky-Golay',
-    'butterworth'    : 'Butterworth (2Hz)',
+    'butterworth'    : 'Butterworth (1.5Hz)',
     'kalman'         : 'Kalman (CV)',
 }
 

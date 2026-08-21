@@ -41,20 +41,20 @@ spike_mag = 8.0
 noise_seed = 42
 
 #--------------Filter Perameter-------------#
-ma_half_window = 3
+ma_half_window = 7
 
 gt_sg_window = 15
 gt_sg_polyorder = 2
 
-sg_window = 7
-sg_polyorder = 3
+sg_window = 15
+sg_polyorder = 2
 
-bw_butoff_hz = 2.0
-bw_order = 4
+bw_butoff_hz = 1.5
+bw_order = 2
 bw_fs = fps
 
-kf_q_std = 0.1
-kf_r_std = sigma
+kf_q_std = 0.01
+kf_r_std = 1.5
 
 #-------------Pitch Control Model--------------#
 vmax = 8.0

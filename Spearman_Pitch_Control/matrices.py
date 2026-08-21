@@ -84,7 +84,7 @@ def build_table_one(vel_cache, timing_results):
     labels = {
         'moving_avg'     : 'Moving Average',
         'savitzky_golay' : 'Savitzky-Golay',
-        'butterworth'    : 'Butterworth (2Hz)',
+        'butterworth'    : 'Butterworth (1.5Hz)',
         'kalman'         : 'Kalman (CV)',
     }
 
@@ -128,7 +128,7 @@ def build_table_seven(detected_accum, extrap_accum):
     labels = {
         'moving_avg'     : 'Moving Average',
         'savitzky_golay' : 'Savitzky-Golay',
-        'butterworth'    : 'Butterworth (2Hz)',
+        'butterworth'    : 'Butterworth (1.5Hz)',
         'kalman'         : 'Kalman (CV)',
     }
 
