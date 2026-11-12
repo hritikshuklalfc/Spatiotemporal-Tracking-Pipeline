@@ -26,6 +26,7 @@ BETA_VALUES = [2.3, 2.5, 2.7]
 DEFAULT_BETA = 2.5
 
 FILTER_NAMES = ['moving_avg', 'savitzky_golay', 'butterworth', 'kalman']
+INTENSITY_BANDS = ['Low', 'HSR', 'Sprint', 'High Accel']
 LABELS = {
     'moving_avg'     : 'Moving Average',
     'savitzky_golay' : 'Savitzky-Golay',
@@ -132,6 +133,8 @@ def run_single_match(match_id):
     # ── Velocity metrics ──────────────────────────────────────
     vel_metrics = {f: {'MAE': [], 'RMSE': [], 'Pearson_r': []}
                    for f in FILTER_NAMES}
+    intensity_metrics = {f: {band: [] for band in INTENSITY_BANDS}
+                         for f in FILTER_NAMES}
 
     for pid, result in vel_cache.items():
         if result is None:
@@ -141,6 +144,25 @@ def run_single_match(match_id):
             for metric, val in s.items():
                 if np.isfinite(val):
                     vel_metrics[fname][metric].append(val)
+
+            speed_hat = np.sqrt(np.sum(np.asarray(result[fname]) ** 2, axis=0))
+            speed_star = np.sqrt(np.sum(np.asarray(result['ground_truth']) ** 2,
+                                         axis=0))
+            n = min(len(speed_hat), len(speed_star))
+            speed_hat = speed_hat[:n]
+            speed_star = speed_star[:n]
+            acceleration = np.gradient(speed_star, 0.1)
+            band_masks = {
+                'Low': (speed_star >= 0.0) & (speed_star <= 4.0),
+                'HSR': (speed_star >= 5.5) & (speed_star <= 7.0),
+                'Sprint': speed_star > 7.0,
+                'High Accel': np.abs(acceleration) > 3.0,
+            }
+            for band, mask in band_masks.items():
+                if np.any(mask):
+                    intensity_metrics[fname][band].append(
+                        float(np.mean(np.abs(speed_hat[mask] - speed_star[mask])))
+                    )
 
     # ── Pitch control ─────────────────────────────────────────
     pc_metrics = {b: {f: [] for f in FILTER_NAMES}
@@ -191,6 +213,13 @@ def run_single_match(match_id):
                 for metric, vals in metrics.items()
             }
             for fname, metrics in vel_metrics.items()
+        },
+        'intensity_metrics': {
+            fname: {
+                band: float(np.mean(values)) if values else None
+                for band, values in bands.items()
+            }
+            for fname, bands in intensity_metrics.items()
         },
         'pc_metrics': {
             str(b): {
@@ -278,6 +307,46 @@ def print_cross_match_tables(all_results):
         return
 
     print(f"\n\nAggregating results across {n} matches...\n")
+
+    print("=" * 118)
+    print("PER-MATCH VELOCITY METRICS AND FILTER TIMING")
+    print("=" * 118)
+    print(f"{'Match':<10} {'Filter':<22} {'MAE':>10} {'RMSE':>10} "
+          f"{'Pearson r':>12} {'Time (s)':>12}")
+    print("-" * 118)
+    for result in valid:
+        for fname in FILTER_NAMES:
+            metrics = result['vel_metrics'][fname]
+            print(f"{result['match_id']:<10} {LABELS[fname]:<22} "
+                  f"{metrics['MAE']:>10.4f} {metrics['RMSE']:>10.4f} "
+                  f"{metrics['Pearson_r']:>12.4f} "
+                  f"{result['timing'][fname]:>12.6f}")
+    print("=" * 118)
+
+    print("\n" + "=" * 92)
+    print(f"PER-MATCH MAE_map (β={DEFAULT_BETA})")
+    print("=" * 92)
+    print(f"{'Match':<10} " + " ".join(f"{LABELS[f]:>20}" for f in FILTER_NAMES))
+    print("-" * 92)
+    b_key = str(DEFAULT_BETA)
+    for result in valid:
+        values = [result['pc_metrics'][b_key][fname]['mean'] for fname in FILTER_NAMES]
+        print(f"{result['match_id']:<10} " + " ".join(f"{value:>20.6f}" for value in values))
+    print("=" * 92)
+
+    print("\n" + "=" * 92)
+    print("INTENSITY-BAND MAE (mean across players per match, then matches)")
+    print("=" * 92)
+    print(f"{'Filter':<22} " + " ".join(f"{band:>14}" for band in INTENSITY_BANDS))
+    print("-" * 92)
+    for fname in FILTER_NAMES:
+        values = []
+        for band in INTENSITY_BANDS:
+            band_values = [r['intensity_metrics'][fname][band] for r in valid
+                           if r['intensity_metrics'][fname][band] is not None]
+            values.append(np.mean(band_values) if band_values else np.nan)
+        print(f"{LABELS[fname]:<22} " + " ".join(f"{value:>14.6f}" for value in values))
+    print("=" * 92)
 
     # ── TABLE IV: Velocity metrics ─────────────────────────────
     print("=" * 75)

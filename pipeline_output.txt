@@ -1,0 +1,1003 @@
+  [ok] 36 players mapped, home=4177, away=1805
+  [ok] 29 players, 25 eval frames selected
+  [ok] 29/29 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=4177, away=867
+  [ok] 30 players, 25 eval frames selected
+  [ok] 30/30 players have valid output
+  [ok] 24 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=1802, away=871
+  [ok] 32 players, 25 eval frames selected
+  [ok] 32/32 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=870, away=2380
+  [ok] 30 players, 25 eval frames selected
+  [ok] 30/30 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=869, away=866
+  [ok] 30 players, 25 eval frames selected
+  [ok] 30/30 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=2380, away=1804
+  [ok] 32 players, 25 eval frames selected
+  [ok] 32/32 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=867, away=868
+  [ok] 32 players, 25 eval frames selected
+  [ok] 32/32 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=1803, away=869
+  [ok] 30 players, 25 eval frames selected
+  [ok] 30/30 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=1803, away=4177
+  [ok] 32 players, 25 eval frames selected
+  [ok] 32/32 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+  [ok] 36 players mapped, home=868, away=4177
+  [ok] 32 players, 25 eval frames selected
+  [ok] 32/32 players have valid output
+  [ok] 25 frames evaluated for pitch control
+
+Raw results saved to: outputs/cross_match_results.json
+
+
+Aggregating results across 10 matches...
+
+======================================================================================================================
+PER-MATCH VELOCITY METRICS AND FILTER TIMING
+======================================================================================================================
+Match      Filter                        MAE       RMSE    Pearson r     Time (s)
+----------------------------------------------------------------------------------------------------------------------
+1886347    Moving Average             0.9910     2.4160       0.6596     0.000517
+1886347    Savitzky-Golay             2.2231     3.5091       0.6056     0.000491
+1886347    Butterworth (1.5Hz)        3.2462     5.5426       0.4522     0.000827
+1886347    Kalman (CV)                1.3007     2.8712       0.4851     0.035733
+1899585    Moving Average             1.0474     2.5941       0.6898     0.000489
+1899585    Savitzky-Golay             2.2386     3.5262       0.6726     0.000464
+1899585    Butterworth (1.5Hz)        3.2339     5.5211       0.5201     0.000823
+1899585    Kalman (CV)                1.3911     3.1839       0.4896     0.033416
+1925299    Moving Average             0.9610     2.3845       0.6615     0.000559
+1925299    Savitzky-Golay             2.2090     3.4816       0.6183     0.000555
+1925299    Butterworth (1.5Hz)        3.2186     5.5084       0.4620     0.000900
+1925299    Kalman (CV)                1.2121     2.8069       0.4886     0.039649
+1953632    Moving Average             0.9801     2.3184       0.6337     0.000538
+1953632    Savitzky-Golay             2.2267     3.4976       0.5764     0.000519
+1953632    Butterworth (1.5Hz)        3.2658     5.5667       0.4154     0.000932
+1953632    Kalman (CV)                1.2602     2.6319       0.4774     0.036179
+1996435    Moving Average             0.9752     2.3649       0.6606     0.000531
+1996435    Savitzky-Golay             2.2088     3.4807       0.6104     0.000472
+1996435    Butterworth (1.5Hz)        3.2211     5.5185       0.4486     0.000849
+1996435    Kalman (CV)                1.2618     2.7743       0.4896     0.036261
+2006229    Moving Average             0.9675     2.3236       0.6411     0.000539
+2006229    Savitzky-Golay             2.2110     3.4733       0.5865     0.000515
+2006229    Butterworth (1.5Hz)        3.2170     5.5016       0.4267     0.000834
+2006229    Kalman (CV)                1.2539     2.6677       0.4786     0.037036
+2011166    Moving Average             1.0596     2.6255       0.6974     0.000513
+2011166    Savitzky-Golay             2.2613     3.5456       0.6806     0.000463
+2011166    Butterworth (1.5Hz)        3.2650     5.5649       0.5245     0.000770
+2011166    Kalman (CV)                1.4214     3.2495       0.4944     0.032187
+2013725    Moving Average             0.9819     2.3623       0.6597     0.000569
+2013725    Savitzky-Golay             2.2387     3.5122       0.6012     0.000507
+2013725    Butterworth (1.5Hz)        3.2670     5.5748       0.4375     0.001024
+2013725    Kalman (CV)                1.2612     2.7317       0.5070     0.037570
+2015213    Moving Average             0.9556     2.2912       0.6516     0.000568
+2015213    Savitzky-Golay             2.1997     3.4685       0.5832     0.000594
+2015213    Butterworth (1.5Hz)        3.2102     5.5061       0.4232     0.000930
+2015213    Kalman (CV)                1.2408     2.6375       0.4987     0.040854
+2017461    Moving Average             1.0700     2.6725       0.7128     0.000503
+2017461    Savitzky-Golay             2.2595     3.5572       0.6988     0.000522
+2017461    Butterworth (1.5Hz)        3.2478     5.5480       0.5473     0.000791
+2017461    Kalman (CV)                1.4576     3.3967       0.4944     0.033285
+======================================================================================================================
+
+============================================================================================
+PER-MATCH MAE_map (β=2.5)
+============================================================================================
+Match            Moving Average       Savitzky-Golay  Butterworth (1.5Hz)          Kalman (CV)
+--------------------------------------------------------------------------------------------
+1886347                0.003613             0.010739             0.016581             0.008608
+1899585                0.005006             0.012544             0.014207             0.007140
+1925299                0.006192             0.019101             0.024440             0.009003
+1953632                0.009825             0.016958             0.016090             0.006857
+1996435                0.005732             0.015262             0.021834             0.006913
+2006229                0.007319             0.015161             0.017428             0.008861
+2011166                0.004670             0.011265             0.016147             0.004543
+2013725                0.005301             0.015247             0.024653             0.007941
+2015213                0.006409             0.014182             0.016139             0.007866
+2017461                0.008755             0.021163             0.028601             0.008294
+============================================================================================
+
+============================================================================================
+INTENSITY-BAND MAE (mean across players per match, then matches)
+============================================================================================
+Filter                            Low            HSR         Sprint     High Accel
+--------------------------------------------------------------------------------------------
+Moving Average               0.905595       0.931909       6.705853       3.954573
+Savitzky-Golay               2.249332       1.866962       3.476166       2.853334
+Butterworth (1.5Hz)          3.308540       2.595748       3.238932       3.296924
+Kalman (CV)                  1.122386       1.490178      10.384839       5.887047
+============================================================================================
+===========================================================================
+TABLE IV — Cross-Match Velocity Recovery Error (N=10 matches)
+===========================================================================
+Filter                   MAE mean  MAE std  RMSE mean RMSE std  Pearson r
+---------------------------------------------------------------------------
+Moving Average             0.9989   0.0408     2.4353   0.1334     0.6668
+Savitzky-Golay             2.2276   0.0204     3.5052   0.0290     0.6234
+Butterworth (1.5Hz)        3.2393   0.0209     5.5353   0.0261     0.4657
+Kalman (CV)                1.3061   0.0809     2.8951   0.2641     0.4903
+===========================================================================
+
+Timing (mean across matches):
+  Moving Average         0.0005s
+  Savitzky-Golay         0.0005s
+  Butterworth (1.5Hz)    0.0009s
+  Kalman (CV)            0.0362s
+
+=================================================================
+TABLE V — Cross-Match MAEmap at β=2.5 (N=10 matches)
+=================================================================
+Filter                  Mean MAEmap   Std (within)   Std (across)
+-----------------------------------------------------------------
+Moving Average               0.0063         0.0077         0.0018
+Savitzky-Golay               0.0152         0.0091         0.0031
+Butterworth (1.5Hz)          0.0196         0.0130         0.0046
+Kalman (CV)                  0.0076         0.0075         0.0013
+=================================================================
+  Std (within)  = average frame-to-frame variance within a match
+  Std (across)  = variance of mean MAEmap across matches
+  If std(across) << std(within): filter effect is match-independent
+
+=================================================================
+TABLE VI — MAEmap Ranking Consistency (N=10 matches)
+=================================================================
+  Rank 1 = lowest MAEmap (best), Rank 4 = highest (worst)
+Filter                 Rank per match                  Always same rank?
+-----------------------------------------------------------------
+Moving Average         1  1  1  2  1  1  2  1  1  2   NO  (varies: {'1', '2'})
+Savitzky-Golay         3  3  3  4  3  3  3  3  3  3   NO  (varies: {'4', '3'})
+Butterworth (1.5Hz)    4  4  4  3  4  4  4  4  4  4   NO  (varies: {'3', '4'})
+Kalman (CV)            2  2  2  1  2  2  1  2  2  1   NO  (varies: {'1', '2'})
+=================================================================
+
+Completed: 10/10 matches processed successfully
+Starting noise sensitivity sweep...
+Data path: /Users/Documents/Benchmarking Noise Reduction Filters/data/archive_skillcorner
+Output path: /Users/Documents/Benchmarking Noise Reduction Filters/outputs/sensitivity_results.csv
+Grid: 4 sigma values × 3 p_occ values × 10 matches
+Total match runs: 120
+
+
+[1/12] σ=0.15m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[2/12] σ=0.15m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[3/12] σ=0.15m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[4/12] σ=0.25m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[5/12] σ=0.25m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[6/12] σ=0.25m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[7/12] σ=0.40m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[8/12] σ=0.40m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[9/12] σ=0.40m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[10/12] σ=0.60m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[11/12] σ=0.60m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[12/12] σ=0.60m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+================================================================================
+NOISE SENSITIVITY SWEEP — RMSE Rankings (1=best)
+================================================================================
+    σ   p_occ    MA    SG    BW    KF  MA_wins_RMSE?  MA_wins_MAE?
+--------------------------------------------------------------------------------
+ 0.15    0.02     1     2     4     3            YES           YES
+ 0.15    0.05     1     3     4     2            YES           YES
+ 0.15    0.10     1     3     4     2            YES           YES
+ 0.25    0.02     1     2     4     3            YES           YES
+ 0.25    0.05     1     3     4     2            YES           YES
+ 0.25    0.10     1     3     4     2            YES           YES
+ 0.40    0.02     1     2     4     3            YES           YES
+ 0.40    0.05     1     3     4     2            YES           YES
+ 0.40    0.10     1     3     4     2            YES           YES
+ 0.60    0.02     1     2     4     3            YES           YES
+ 0.60    0.05     1     3     4     2            YES           YES
+ 0.60    0.10     1     3     4     2            YES           YES
+================================================================================
+
+================================================================================
+RMSE VALUES PER CONDITION (m/s)
+================================================================================
+    σ   p_occ        MA        SG        BW        KF
+--------------------------------------------------------------------------------
+ 0.15    0.02    1.9492    2.2731    3.5200    2.6494
+ 0.15    0.05    2.4094    3.4364    5.4365    2.8817
+ 0.15    0.10    2.9675    4.7566    7.4704    3.1827
+ 0.25    0.02    1.9582    2.3002    3.5595    2.6536
+ 0.25    0.05    2.4170    3.4565    5.4650    2.8856
+ 0.25    0.10    2.9740    4.7727    7.4937    3.1864
+ 0.40    0.02    1.9801    2.3652    3.6561    2.6635
+ 0.40    0.05    2.4353    3.5052    5.5353    2.8951
+ 0.40    0.10    2.9897    4.8117    7.5511    3.1955
+ 0.60    0.02    2.0242    2.4954    3.8557    2.6840
+ 0.60    0.05    2.4725    3.6040    5.6817    2.9145
+ 0.60    0.10    3.0218    4.8913    7.6703    3.2142
+================================================================================
+
+MA rank-1 RMSE: 12/12 conditions
+MA rank-1 MAE:  12/12 conditions
+
+================================================================================
+MAE VALUES PER CONDITION (m/s)
+================================================================================
+    σ   p_occ        MA        SG        BW        KF
+--------------------------------------------------------------------------------
+ 0.15    0.02    0.5567    1.0848    1.4707    1.0702
+ 0.15    0.05    0.8581    2.0441    2.9050    1.2717
+ 0.15    0.10    1.3110    3.2236    4.7749    1.6104
+ 0.25    0.02    0.6129    1.1841    1.6344    1.0820
+ 0.25    0.05    0.9112    2.1135    3.0310    1.2820
+ 0.25    0.10    1.3594    3.2661    4.8607    1.6183
+ 0.40    0.02    0.7057    1.3389    1.8932    1.1092
+ 0.40    0.05    0.9989    2.2276    3.2393    1.3061
+ 0.40    0.10    1.4397    3.3427    5.0121    1.6372
+ 0.60    0.02    0.8360    1.5578    2.2649    1.1600
+ 0.60    0.05    1.1225    2.3980    3.5485    1.3521
+ 0.60    0.10    1.5531    3.4671    5.2493    1.6746
+================================================================================
+
+================================================================================
+HYPERPARAMETER SWEEP LOGS (mean across all players and 10 matches)
+================================================================================
+Moving Average k sweep
+  k=5     RMSE=6.546693 MAE=2.815695
+  k=7     RMSE=4.584223 MAE=1.984062
+  k=9     RMSE=3.538978 MAE=1.546241
+  k=11    RMSE=2.933968 MAE=1.277359
+  k=13    RMSE=2.599989 MAE=1.108598
+  k=15    RMSE=2.436148 MAE=0.999097
+  k=21    RMSE=2.363170 MAE=0.850759
+
+Savitzky-Golay k sweep (window length)
+  sg_window=5     RMSE=15.521917 MAE=7.953324
+  sg_window=7     RMSE=9.635981 MAE=5.507496
+  sg_window=9     RMSE=6.842626 MAE=4.142500
+  sg_window=11    RMSE=5.208858 MAE=3.249284
+  sg_window=15    RMSE=3.505196 MAE=2.227670
+  sg_window=21    RMSE=2.422982 MAE=1.510745
+
+Butterworth fc sweep (Hz)
+  fc=1.0   RMSE=2.916421 MAE=1.790900
+  fc=1.5   RMSE=5.534926 MAE=3.238983
+  fc=2.0   RMSE=8.643639 MAE=4.880831
+  fc=3.0   RMSE=15.914200 MAE=8.708377
+================================================================================
+
+Results saved to /Users/Documents/Benchmarking Noise Reduction Filters/outputs/sensitivity_results.csv
+
+Match 1886347....
+ Scored 29/29 players
+
+Match 1899585....
+ Scored 29/30 players
+
+Match 1925299....
+ Scored 32/32 players
+
+Match 1953632....
+ Scored 30/30 players
+
+Match 1996435....
+ Scored 30/30 players
+
+Match 2006229....
+ Scored 32/32 players
+
+Match 2011166....
+ Scored 32/32 players
+
+Match 2013725....
+ Scored 30/30 players
+
+Match 2015213....
+ Scored 32/32 players
+
+Match 2017461....
+ Scored 32/32 players
+
+================================================================================
+TABLE VII — Velocity Recovery at Extrapolated Frames: Filters vs SkillCorner (N=10 matches)
+================================================================================
+  Ground truth: linear interpolation between detected frames
+  Evaluated at: extrapolated frames only (is_detected == False)
+================================================================================
+Method                      MAE (m/s)  RMSE (m/s)  Pearson r   Total N
+--------------------------------------------------------------------------------
+────────────────────────────────────────────────────────────────────────────────
+SkillCorner (baseline)         2.8619     17.7163     0.1577   709,463
+────────────────────────────────────────────────────────────────────────────────
+Moving Average                 1.7286      3.3267     0.5221   709,463
+Savitzky-Golay                 2.2838      5.5966     0.4423   709,463
+Butterworth (1.5Hz)            2.5750      8.3333     0.3294   709,463
+Kalman (CV)                    2.7201     13.5112     0.2037   709,463
+================================================================================
+
+=================================================================
+KEY RATIO — Filter vs SkillCorner baseline
+=================================================================
+Method                      MAE ratio    r ratio   MAE interpretation
+-----------------------------------------------------------------
+Moving Average                  0.604      3.312 Filter BEATS SkillCorner
+Savitzky-Golay                  0.798      2.805 Filter BEATS SkillCorner
+Butterworth (1.5Hz)             0.900      2.090 Filter BEATS SkillCorner
+Kalman (CV)                     0.950      1.292   Statistically tied
+=================================================================
+  MAE ratio < 1.0 → filter outperforms SkillCorner baseline
+  MAE ratio > 1.0 → SkillCorner outperforms the filter
+  r ratio   < 1.0 → filter has worse temporal shape fidelity
+
+Completed: 10/10 matches
+  1886347: OK
+  1899585: OK
+  1925299: OK
+  1953632: OK
+  1996435: OK
+  2006229: OK
+  2011166: OK
+  2013725: OK
+  2015213: OK
+  2017461: OK
+
+
+===== SINGLE-MATCH MAIN PIPELINE (RAW BASELINE TABLE UPDATE) =====
+
+── STEP 1: Loading data ─────────────────────────────
+
+── STEP 2: Computing velocities (all filters) ───────
+[main] 29/29 players have valid filter output
+
+── STEP 3: Timing filters ───────────────────────────
+  moving_avg           0.0005 s
+  savitzky_golay       0.0005 s
+  butterworth          0.0008 s
+  kalman               0.0346 s
+
+── STEP 4: Table I — Velocity Recovery Error ────────
+
+=======================================================
+TABLE I — Velocity Recovery Error (RMSE)
+=======================================================
+Filter                    Mean RMSE        Std
+-------------------------------------------------------
+Raw Corrupted Data          34.9070     0.4397
+Moving Average               2.4160     0.3140
+Savitzky-Golay               3.5091     0.1249
+Butterworth (1.5Hz)          5.5426     0.1512
+Kalman (CV)                  2.8712     0.6421
+=======================================================
+
+── STEP 5: Figure 1 ─────────────────────────────────
+
+── STEP 6: Pitch Control Distortion ─────────────────
+
+=======================================================
+TABLE II — Pitch-Control Distortion (β = 2.5)
+=======================================================
+Filter                  Mean MAEmap        Std
+-------------------------------------------------------
+Moving Average               0.0036     0.0042
+Savitzky-Golay               0.0107     0.0058
+Butterworth (1.5Hz)          0.0166     0.0119
+Kalman (CV)                  0.0086     0.0133
+=======================================================
+
+======================================================================
+TABLE III — MAEmap Sensitivity to β
+======================================================================
+Filter                  β=2.3  β=2.5  β=2.7
+----------------------------------------------------------------------
+Moving Average          0.0033  0.0036  0.0040
+Savitzky-Golay          0.0096  0.0107  0.0119
+Butterworth (1.5Hz)     0.0149  0.0166  0.0183
+Kalman (CV)             0.0077  0.0086  0.0095
+======================================================================
+
+── STEP 7: Figure 2 ─────────────────────────────────
+Saved: outputs/match_1886347/fig2_pitch_control.png
+
+── STEP 8: Figure 3 ─────────────────────────────────
+[main] Best filter:  Moving Average (MAEmap=0.0036)
+[main] Worst filter: Butterworth (1.5Hz) (MAEmap=0.0166)
+
+── STEP 9: Figure 4 — Pareto scatter ────────────────
+Saved: outputs/match_1886347/fig4_pareto_scatter.png
+
+── DONE ─────────────────────────────────────────────
+All tables printed above. Figures saved to outputs/
+Fill Table I and Table II in your paper with the numbers above.
+
+
+===== SINGLE-MATCH MAIN PIPELINE (RAW BASELINE FINAL RUN) =====
+
+── STEP 1: Loading data ─────────────────────────────
+
+── STEP 2: Computing velocities (all filters) ───────
+[main] 29/29 players have valid filter output
+
+── STEP 3: Timing filters ───────────────────────────
+  moving_avg           0.0005 s
+  savitzky_golay       0.0005 s
+  butterworth          0.0008 s
+  kalman               0.0354 s
+
+── STEP 4: Table I — Velocity Recovery Error ────────
+
+=======================================================
+TABLE I — Velocity Recovery Error (RMSE)
+=======================================================
+Filter                    Mean RMSE        Std
+-------------------------------------------------------
+Raw Corrupted Data          34.9070     0.4397
+Moving Average               2.4160     0.3140
+Savitzky-Golay               3.5091     0.1249
+Butterworth (1.5Hz)          5.5426     0.1512
+Kalman (CV)                  2.8712     0.6421
+=======================================================
+
+── STEP 5: Figure 1 ─────────────────────────────────
+
+── STEP 6: Pitch Control Distortion ─────────────────
+
+=======================================================
+TABLE II — Pitch-Control Distortion (β = 2.5)
+=======================================================
+Filter                  Mean MAEmap        Std
+-------------------------------------------------------
+Moving Average               0.0036     0.0042
+Savitzky-Golay               0.0107     0.0058
+Butterworth (1.5Hz)          0.0166     0.0119
+Kalman (CV)                  0.0086     0.0133
+=======================================================
+
+======================================================================
+TABLE III — MAEmap Sensitivity to β
+======================================================================
+Filter                  β=2.3  β=2.5  β=2.7
+----------------------------------------------------------------------
+Moving Average          0.0033  0.0036  0.0040
+Savitzky-Golay          0.0096  0.0107  0.0119
+Butterworth (1.5Hz)     0.0149  0.0166  0.0183
+Kalman (CV)             0.0077  0.0086  0.0095
+======================================================================
+
+── STEP 7: Figure 2 ─────────────────────────────────
+Saved: outputs/match_1886347/fig2_pitch_control.png
+
+── STEP 8: Figure 3 ─────────────────────────────────
+[main] Best filter:  Moving Average (MAEmap=0.0036)
+[main] Worst filter: Butterworth (1.5Hz) (MAEmap=0.0166)
+
+── STEP 9: Figure 4 — Pareto scatter ────────────────
+Saved: outputs/match_1886347/fig4_pareto_scatter.png
+
+── DONE ─────────────────────────────────────────────
+All tables printed above. Figures saved to outputs/
+Fill Table I and Table II in your paper with the numbers above.
+
+
+===== SEED AND SG SWEEP UPDATE =====
+
+── STEP 1: Loading data ─────────────────────────────
+
+── STEP 2: Computing velocities (all filters) ───────
+[main] 29/29 players have valid filter output
+
+── STEP 3: Timing filters ───────────────────────────
+  moving_avg           0.0005 s
+  savitzky_golay       0.0005 s
+  butterworth          0.0008 s
+  kalman               0.0364 s
+
+── STEP 4: Table I — Velocity Recovery Error ────────
+
+=======================================================
+TABLE I — Velocity Recovery Error (RMSE)
+=======================================================
+Filter                    Mean RMSE        Std
+-------------------------------------------------------
+Raw Corrupted Data          34.9070     0.4397
+Moving Average               2.4160     0.3140
+Savitzky-Golay               3.5091     0.1249
+Butterworth (1.5Hz)          5.5426     0.1512
+Kalman (CV)                  2.8712     0.6421
+=======================================================
+
+── STEP 5: Figure 1 ─────────────────────────────────
+
+── STEP 6: Pitch Control Distortion ─────────────────
+
+=======================================================
+TABLE II — Pitch-Control Distortion (β = 2.5)
+=======================================================
+Filter                  Mean MAEmap        Std
+-------------------------------------------------------
+Moving Average               0.0036     0.0042
+Savitzky-Golay               0.0107     0.0058
+Butterworth (1.5Hz)          0.0166     0.0119
+Kalman (CV)                  0.0086     0.0133
+=======================================================
+
+======================================================================
+TABLE III — MAEmap Sensitivity to β
+======================================================================
+Filter                  β=2.3  β=2.5  β=2.7
+----------------------------------------------------------------------
+Moving Average          0.0033  0.0036  0.0040
+Savitzky-Golay          0.0096  0.0107  0.0119
+Butterworth (1.5Hz)     0.0149  0.0166  0.0183
+Kalman (CV)             0.0077  0.0086  0.0095
+======================================================================
+
+── STEP 7: Figure 2 ─────────────────────────────────
+Saved: outputs/match_1886347/fig2_pitch_control.png
+
+── STEP 8: Figure 3 ─────────────────────────────────
+[main] Best filter:  Moving Average (MAEmap=0.0036)
+[main] Worst filter: Butterworth (1.5Hz) (MAEmap=0.0166)
+
+── STEP 9: Figure 4 — Pareto scatter ────────────────
+Saved: outputs/match_1886347/fig4_pareto_scatter.png
+
+── DONE ─────────────────────────────────────────────
+All tables printed above. Figures saved to outputs/
+Fill Table I and Table II in your paper with the numbers above.
+Starting noise sensitivity sweep...
+Data path: /Users/Documents/Benchmarking Noise Reduction Filters/data/archive_skillcorner
+Output path: /Users/Documents/Benchmarking Noise Reduction Filters/outputs/sensitivity_results.csv
+Grid: 4 sigma values × 3 p_occ values × 10 matches
+Total match runs: 120
+
+
+[1/12] σ=0.15m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[2/12] σ=0.15m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[3/12] σ=0.15m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[4/12] σ=0.25m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[5/12] σ=0.25m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[6/12] σ=0.25m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[7/12] σ=0.40m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[8/12] σ=0.40m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[9/12] σ=0.40m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[10/12] σ=0.60m  p_occ=0.02
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[11/12] σ=0.60m  p_occ=0.05
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+[12/12] σ=0.60m  p_occ=0.10
+  match 1886347 done
+  match 1899585 done
+  match 1925299 done
+  match 1953632 done
+  match 1996435 done
+  match 2006229 done
+  match 2011166 done
+  match 2013725 done
+  match 2015213 done
+  match 2017461 done
+
+================================================================================
+NOISE SENSITIVITY SWEEP — RMSE Rankings (1=best)
+================================================================================
+    σ   p_occ    MA    SG    BW    KF  MA_wins_RMSE?  MA_wins_MAE?
+--------------------------------------------------------------------------------
+ 0.15    0.02     1     2     4     3            YES           YES
+ 0.15    0.05     1     3     4     2            YES           YES
+ 0.15    0.10     1     3     4     2            YES           YES
+ 0.25    0.02     1     2     4     3            YES           YES
+ 0.25    0.05     1     3     4     2            YES           YES
+ 0.25    0.10     1     3     4     2            YES           YES
+ 0.40    0.02     1     2     4     3            YES           YES
+ 0.40    0.05     1     3     4     2            YES           YES
+ 0.40    0.10     1     3     4     2            YES           YES
+ 0.60    0.02     1     2     4     3            YES           YES
+ 0.60    0.05     1     3     4     2            YES           YES
+ 0.60    0.10     1     3     4     2            YES           YES
+================================================================================
+
+================================================================================
+RMSE VALUES PER CONDITION (m/s)
+================================================================================
+    σ   p_occ        MA        SG        BW        KF
+--------------------------------------------------------------------------------
+ 0.15    0.02    1.9492    2.2731    3.5200    2.6494
+ 0.15    0.05    2.4094    3.4364    5.4365    2.8817
+ 0.15    0.10    2.9675    4.7566    7.4704    3.1827
+ 0.25    0.02    1.9582    2.3002    3.5595    2.6536
+ 0.25    0.05    2.4170    3.4565    5.4650    2.8856
+ 0.25    0.10    2.9740    4.7727    7.4937    3.1864
+ 0.40    0.02    1.9801    2.3652    3.6561    2.6635
+ 0.40    0.05    2.4353    3.5052    5.5353    2.8951
+ 0.40    0.10    2.9897    4.8117    7.5511    3.1955
+ 0.60    0.02    2.0242    2.4954    3.8557    2.6840
+ 0.60    0.05    2.4725    3.6040    5.6817    2.9145
+ 0.60    0.10    3.0218    4.8913    7.6703    3.2142
+================================================================================
+
+MA rank-1 RMSE: 12/12 conditions
+MA rank-1 MAE:  12/12 conditions
+
+================================================================================
+MAE VALUES PER CONDITION (m/s)
+================================================================================
+    σ   p_occ        MA        SG        BW        KF
+--------------------------------------------------------------------------------
+ 0.15    0.02    0.5567    1.0848    1.4707    1.0702
+ 0.15    0.05    0.8581    2.0441    2.9050    1.2717
+ 0.15    0.10    1.3110    3.2236    4.7749    1.6104
+ 0.25    0.02    0.6129    1.1841    1.6344    1.0820
+ 0.25    0.05    0.9112    2.1135    3.0310    1.2820
+ 0.25    0.10    1.3594    3.2661    4.8607    1.6183
+ 0.40    0.02    0.7057    1.3389    1.8932    1.1092
+ 0.40    0.05    0.9989    2.2276    3.2393    1.3061
+ 0.40    0.10    1.4397    3.3427    5.0121    1.6372
+ 0.60    0.02    0.8360    1.5578    2.2649    1.1600
+ 0.60    0.05    1.1225    2.3980    3.5485    1.3521
+ 0.60    0.10    1.5531    3.4671    5.2493    1.6746
+================================================================================
+
+================================================================================
+HYPERPARAMETER SWEEP LOGS (mean across all players and 10 matches)
+================================================================================
+Moving Average k sweep
+  k=5     RMSE=6.546693 MAE=2.815695
+  k=7     RMSE=4.584223 MAE=1.984062
+  k=9     RMSE=3.538978 MAE=1.546241
+  k=11    RMSE=2.933968 MAE=1.277359
+  k=13    RMSE=2.599989 MAE=1.108598
+  k=15    RMSE=2.436148 MAE=0.999097
+  k=21    RMSE=2.363170 MAE=0.850759
+
+Savitzky-Golay k sweep (window length)
+  sg_window=5     RMSE=15.521917 MAE=7.953324
+  sg_window=7     RMSE=9.635981 MAE=5.507496
+  sg_window=9     RMSE=6.842626 MAE=4.142500
+  sg_window=11    RMSE=5.208858 MAE=3.249284
+  sg_window=13    RMSE=4.193703 MAE=2.651575
+  sg_window=15    RMSE=3.505196 MAE=2.227670
+  sg_window=21    RMSE=2.422982 MAE=1.510745
+
+Butterworth fc sweep (Hz)
+  fc=1.0   RMSE=2.916421 MAE=1.790900
+  fc=1.5   RMSE=5.534926 MAE=3.238983
+  fc=2.0   RMSE=8.643639 MAE=4.880831
+  fc=3.0   RMSE=15.914200 MAE=8.708377
+================================================================================
+
+Results saved to /Users/Documents/Benchmarking Noise Reduction Filters/outputs/sensitivity_results.csv
+
+── STEP 1: Loading data ─────────────────────────────
+
+── STEP 2: Computing velocities (all filters) ───────
+[main] 29/29 players have valid filter output
+
+── STEP 3: Timing filters ───────────────────────────
+  moving_avg           0.0005 s
+  savitzky_golay       0.0005 s
+  butterworth          0.0010 s
+  kalman               0.0357 s
+
+── STEP 4: Table I — Velocity Recovery Error ────────
+
+=======================================================
+TABLE I — Velocity Recovery Error (RMSE)
+=======================================================
+Filter                    Mean RMSE        Std
+-------------------------------------------------------
+Raw Corrupted Data          34.9070     0.4397
+Moving Average               2.4160     0.3140
+Savitzky-Golay               3.5091     0.1249
+Butterworth (1.5Hz)          5.5426     0.1512
+Kalman (CV)                  2.8712     0.6421
+=======================================================
+
+── STEP 5: Figure 1 ─────────────────────────────────
+
+── STEP 6: Pitch Control Distortion ─────────────────
+
+=======================================================
+TABLE II — Pitch-Control Distortion (β = 2.5)
+=======================================================
+Filter                  Mean MAEmap        Std
+-------------------------------------------------------
+Moving Average               0.0036     0.0042
+Savitzky-Golay               0.0107     0.0058
+Butterworth (1.5Hz)          0.0166     0.0119
+Kalman (CV)                  0.0086     0.0133
+=======================================================
+
+======================================================================
+TABLE III — MAEmap Sensitivity to β
+======================================================================
+Filter                  β=2.3  β=2.5  β=2.7
+----------------------------------------------------------------------
+Moving Average          0.0033  0.0036  0.0040
+Savitzky-Golay          0.0096  0.0107  0.0119
+Butterworth (1.5Hz)     0.0149  0.0166  0.0183
+Kalman (CV)             0.0077  0.0086  0.0095
+======================================================================
+
+── STEP 7: Figure 2 ─────────────────────────────────
+Saved: outputs/match_1886347/fig2_pitch_control.png
+
+── STEP 8: Figure 3 ─────────────────────────────────
+[main] Best filter:  Moving Average (MAEmap=0.0036)
+[main] Worst filter: Butterworth (1.5Hz) (MAEmap=0.0166)
+
+── STEP 9: Figure 4 — Pareto scatter ────────────────
+Saved: outputs/match_1886347/fig4_pareto_scatter.png
+
+── DONE ─────────────────────────────────────────────
+All tables printed above. Figures saved to outputs/
+Fill Table I and Table II in your paper with the numbers above.

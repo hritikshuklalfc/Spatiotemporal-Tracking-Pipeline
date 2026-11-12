@@ -295,7 +295,7 @@ def print_table_eight(all_results):
     n = len(valid)
     
     print(f"\n{'='*80}")
-    print(f"TABLE VIII — Velocity Recovery at Extrapolated Frames: "
+    print(f"TABLE VII — Velocity Recovery at Extrapolated Frames: "
           f"Filters vs SkillCorner (N={n} matches)")
     print(f"{'='*80}")
     print(f"  Ground truth: linear interpolation between detected frames")

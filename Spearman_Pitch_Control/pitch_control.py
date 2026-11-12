@@ -48,6 +48,7 @@ def time_filter(filter_fn, x_noisy, y_noisy):
 def build_table_one(vel_cache, timing):
     filter_names = list(timing.keys())
     score_accum = {fname: {'RMSE': []} for fname in filter_names}
+    raw_rmse = []
 
     print("\n" + "=" * 55)
     print("TABLE I — Velocity Recovery Error (RMSE)")
@@ -76,12 +77,23 @@ def build_table_one(vel_cache, timing):
             rmse = float(np.sqrt(np.mean((v_star[:n] - v_filtered[:n]) ** 2)))
             score_accum[fname]['RMSE'].append(rmse)
 
+        if 'raw_noisy' in results:
+            vx_raw, vy_raw = results['raw_noisy']
+            v_raw = np.sqrt(vx_raw ** 2 + vy_raw ** 2)
+            n = min(len(v_star), len(v_raw))
+            if n:
+                raw_rmse.append(float(np.sqrt(
+                    np.mean((v_star[:n] - v_raw[:n]) ** 2))))
+
     label_map = {
         'moving_avg': 'Moving Average',
         'savitzky_golay': 'Savitzky-Golay',
         'butterworth': 'Butterworth (1.5Hz)',
         'kalman': 'Kalman (CV)',
     }
+
+    if raw_rmse:
+        print(f"{'Raw Corrupted Data':<22} {np.mean(raw_rmse):>12.4f} {np.std(raw_rmse):>10.4f}")
 
     for fname in filter_names:
         vals = score_accum[fname]['RMSE']

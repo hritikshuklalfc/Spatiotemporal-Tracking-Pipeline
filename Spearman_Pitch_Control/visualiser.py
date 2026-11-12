@@ -9,44 +9,48 @@ os.makedirs(output_dir, exist_ok=True)
 def plot_velocity_comparision(v_raw, v_filtered, v_star,
                             filter_label = "Savitzky-Golay",
                             player_id = ""):
-    fig, ax = plt.subplots(figsize = (14, 4))
+    fig, ax = plt.subplots(figsize=(12, 4))
     frames = np.arange(len(v_raw))
-    
+
     ax.plot(
-        frames, 
-        v_raw, 
-        color = 'grey', 
-        lw = 0.8, 
-        alpha = 0.7,
-        label = "Raw corrupted velocity (x̃ₜ)"
-        )
-    
-    ax.plot(
-        frames, 
-        v_star, 
-        color = 'green', 
-        lw = 1.2, 
-        alpha = 0.9,
-        label = "Ground truth v*ₜ"
+        frames,
+        v_star,
+        color='#E74C3C',
+        linewidth=2.0,
+        label='Ground truth',
+        zorder=3,
         )
     ax.plot(
-        frames, 
-        v_filtered, 
-        color='steelblue', 
-        lw=1.2,
-        label=f'{filter_label} (v̂ₜ)'
+        frames,
+        v_filtered,
+        color='#2E86AB',
+        linewidth=1.2,
+        label=filter_label,
+        zorder=2,
         )
-    
-    ax.set_xlabel("Frame number")
-    ax.set_ylabel("Speed (m/s)")
-    ax.set_title(f"Fig 1 — Raw vs Filtered Velocity | Player {player_id}")
-    ax.legend(loc='upper right')
-    ax.grid(True, ls='--', alpha=0.4)
-   
-   
+    ax.plot(
+        frames,
+        v_raw,
+        color='#BBBBBB',
+        linewidth=0.5,
+        label='Raw corrupted velocity',
+        zorder=1,
+        )
+
+    ax.set_ylim(0, 30)
+    ax.set_xlabel('Frame number', fontsize=11)
+    ax.set_ylabel('Speed (m/s)', fontsize=11)
+    ax.set_title(
+        f'Fig 1 — Raw vs Filtered Velocity | Player {player_id}\n'
+        '(raw spikes truncated at 30 m/s for clarity; peak spike = 120 m/s)',
+        fontsize=11,
+    )
+    ax.legend(fontsize=10, loc='upper right')
+    ax.grid(True, alpha=0.3)
+
     path = os.path.join(output_dir, "fig1_velocity_comparison.png")
     plt.tight_layout()
-    plt.savefig(path, dpi=150)
+    plt.savefig(path, dpi=300, bbox_inches='tight')
     plt.close()
 
 def plot_fig1_velocity_comparison(v_raw, v_filtered, v_star,
@@ -141,7 +145,7 @@ def plot_pareto_scatter(rmse_scores, timing_scores):
 
     ax.set_xlabel("Wall-clock time per match half (s)")
     ax.set_ylabel("RMSE (m/s)")
-    ax.set_title("Fig 4 — Accuracy–Compute Trade-off\n"
+    ax.set_title("Fig 3 — Accuracy–Compute Trade-off\n"
                  "(Pareto-optimal = bottom-left)")
     ax.legend()
     ax.grid(True, ls='--', alpha=0.4)

@@ -19,6 +19,7 @@ def build_ground_truth(x_clean, y_clean):
 
 def inject_noise(x_star, y_star, seed = noise_seed):
     n = len(x_star)    
+    np.random.seed(seed)
     rng = np.random.default_rng(seed)
     
     eta_x = rng.normal(0, sigma, size = n)

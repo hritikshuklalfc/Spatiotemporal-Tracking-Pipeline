@@ -35,6 +35,12 @@ fps = 10
 dt = 1.0/fps
 
 #---------------Synthetic Noise Perameter----------------------#
+# sigma=0.4 reflects broadcast-specific positional uncertainty, not lab-grade EPTS
+# precision. It is set deliberately conservative relative to Crang et al. (2025,
+# arXiv:2508.19477), who report ~1.1-2.2 m RMSE for camera-detected broadcast
+# tracking frames (higher on extrapolated frames) against a video-based reference
+# at a FIFA World Cup fixture, and stays within the FIFA EPTS Class 2 bound of
+# 0.5 m. See paper Section 2.3 for full justification.
 sigma = 0.4
 p_occ = 0.05
 spike_mag = 8.0
