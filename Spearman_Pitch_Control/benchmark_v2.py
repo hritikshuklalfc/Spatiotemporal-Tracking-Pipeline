@@ -68,11 +68,11 @@ GT_GAUSS_SIGMA = 2.5                  # frames; alternative ground truth (--gt g
 HAMPEL = dict(half=3, scale_win=31, nsig=3.0, min_thr=0.5)   # metres
 
 GRIDS = dict(
-    MA=[dict(k=k) for k in (5, 7, 9, 11, 13, 15, 21, 31)],
-    SG=[dict(w=w, p=p) for w in (7, 9, 11, 13, 15, 21, 31) for p in (2, 3)],
-    BW=[dict(fc=fc) for fc in (0.5, 0.75, 1.0, 1.5, 2.0, 3.0)],
-    KF=[dict(sR=r, sQ=q) for r in (0.2, 0.4, 1.0, 1.5, 3.0) for q in (0.01, 0.03, 0.1, 0.3, 1.0)],
-    MED=[dict(k=k) for k in (3, 5, 7, 9, 15, 21)],
+    MA=[dict(k=k) for k in (5, 7, 9, 11, 13, 15, 21, 31, 45, 61)],
+    SG=[dict(w=w, p=p) for w in (7, 9, 11, 13, 15, 21, 31, 45, 61) for p in (2, 3)],
+    BW=[dict(fc=fc) for fc in (0.15, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0)],
+    KF=[dict(sR=r, sQ=q) for r in (0.1, 0.2, 0.4, 1.0, 1.5, 3.0, 6.0) for q in (0.003, 0.01, 0.03, 0.1, 0.3, 1.0)],
+    MED=[dict(k=k) for k in (3, 5, 7, 9, 15, 21, 31, 45)],
 )
 PAPER_DEFAULTS = {
     "MA": dict(k=15), "SG": dict(w=15, p=2), "BW": dict(fc=1.5), "KF": dict(sR=1.5, sQ=0.01),
