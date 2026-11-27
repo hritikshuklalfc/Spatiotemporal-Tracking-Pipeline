@@ -8,6 +8,13 @@ Run from the REPOSITORY ROOT (same place you run main.py / multi_match.py from):
     python Spearman_Pitch_Control/benchmark_v2.py --gt gauss     # robustness check
 
 What this fixes compared with the v1 pipeline (all verified on the v1 code):
+  0. DATA HANDLING (v2.1): each player's extracted series has gaps in the frame
+     numbering (median gap 169 frames, max 9,801) wherever the player was not
+     tracked. v1 treated the rows on either side of a gap as 0.1 s apart, so the
+     player "teleported" and produced fake speeds of tens to hundreds of m/s:
+     99.7% of all frames above 12 m/s sit within 8 frames of such a gap. v2.1
+     splits every series into contiguous segments and processes each one on its
+     own. (These fake speeds were the "sprint band" of the v1 paper.)
   1. Independent noise per player and per match (v1 re-seeded with 42 for every
      player, so all 309 players received the SAME noise sequence).
   2. Evaluation only on physically plausible frames. In v1, ~49% of the
@@ -51,7 +58,7 @@ MATCH_IDS = ["1886347", "1899585", "1925299", "1953632", "1996435",
 TUNE_MATCHES = MATCH_IDS[:3]          # parameters are chosen on these
 TEST_MATCHES = MATCH_IDS[3:]          # and scored on these (never used for tuning)
 BASE_SEED = 42
-MIN_LEN = 200                         # skip very short player series
+MIN_LEN = 150                         # skip contiguous segments shorter than this (15 s)
 
 V_MAX_PLAUSIBLE = 12.0                # m/s; GT speeds above this are treated as tracking glitches
 GLITCH_DILATE = 10                    # frames excluded on each side of a glitch (SG window spreads it)
@@ -68,11 +75,12 @@ GT_GAUSS_SIGMA = 2.5                  # frames; alternative ground truth (--gt g
 HAMPEL = dict(half=3, scale_win=31, nsig=3.0, min_thr=0.5)   # metres
 
 GRIDS = dict(
-    MA=[dict(k=k) for k in (5, 7, 9, 11, 13, 15, 21, 31, 45, 61)],
-    SG=[dict(w=w, p=p) for w in (7, 9, 11, 13, 15, 21, 31, 45, 61) for p in (2, 3)],
-    BW=[dict(fc=fc) for fc in (0.15, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0)],
-    KF=[dict(sR=r, sQ=q) for r in (0.1, 0.2, 0.4, 1.0, 1.5, 3.0, 6.0) for q in (0.003, 0.01, 0.03, 0.1, 0.3, 1.0)],
-    MED=[dict(k=k) for k in (3, 5, 7, 9, 15, 21, 31, 45)],
+    MA=[dict(k=k) for k in (5, 7, 9, 11, 13, 15, 21, 31, 45, 61, 91, 121)],
+    SG=[dict(w=w, p=p) for w in (7, 9, 11, 13, 15, 21, 31, 45, 61, 91, 121) for p in (2, 3)],
+    BW=[dict(fc=fc) for fc in (0.075, 0.1, 0.15, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0)],
+    KF=[dict(sR=r, sQ=q) for r in (0.1, 0.2, 0.4, 1.0, 1.5, 3.0, 6.0, 12.0, 25.0)
+        for q in (0.0003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0)],
+    MED=[dict(k=k) for k in (3, 5, 7, 9, 15, 21, 31, 45, 61, 91)],
 )
 PAPER_DEFAULTS = {
     "MA": dict(k=15), "SG": dict(w=15, p=2), "BW": dict(fc=1.5), "KF": dict(sR=1.5, sQ=0.01),
@@ -226,21 +234,27 @@ NOISE = {"N1": (noise_n1, 1), "N2": (noise_n2, 2)}
 
 # --------------------------------- data ------------------------------------
 def load_match(data_root, mid):
+    """Return contiguous segments: list of (player_id, segment_no, first_frame, x, y).
+    A new segment starts wherever consecutive rows are not consecutive frame numbers."""
     path = os.path.join(data_root, mid, "extracted_player_tracking.json")
     with open(path) as f:
         d = json.load(f)
-    players = []
+    segs = []
     for pid, p in d.items():
+        fr = np.asarray(p["frame"], dtype=np.int64)
         x = np.asarray(p["x"], float)
         y = np.asarray(p["y"], float)
-        if len(x) < MIN_LEN:
-            continue
-        for z in (x, y):
-            m = np.isnan(z)
-            if m.any():
-                z[m] = np.interp(np.flatnonzero(m), np.flatnonzero(~m), z[~m])
-        players.append((pid, x, y))
-    return players
+        cuts = np.where(np.diff(fr) != 1)[0] + 1
+        for si, idx in enumerate(np.split(np.arange(len(fr)), cuts)):
+            if len(idx) < MIN_LEN:
+                continue
+            xs, ys = x[idx].copy(), y[idx].copy()
+            for z in (xs, ys):
+                m = np.isnan(z)
+                if m.any():
+                    z[m] = np.interp(np.flatnonzero(m), np.flatnonzero(~m), z[~m])
+            segs.append((pid, si, int(fr[idx[0]]), xs, ys))
+    return segs
 
 
 # -------------------------------- scoring ----------------------------------
@@ -261,23 +275,24 @@ def band_masks(v_true, ok):
     }
 
 
-def band_mae(v_true, v_f, ok):
-    return {k: (np.mean(np.abs(v_true - v_f)[m]) if m.sum() > 0 else np.nan)
-            for k, m in band_masks(v_true, ok).items()}
+def band_stats(v_true, v_f, ok):
+    """{band: (sum of absolute errors, number of frames)} so segments can be pooled by frame count."""
+    err = np.abs(v_true - v_f)
+    return {k: (float(err[m].sum()), int(m.sum())) for k, m in band_masks(v_true, ok).items()}
 
 
 def player_stream(data_root, matches, gt_kind, noise_name):
-    """Yield (match, player, v_true, ok, xn, yn) with independent noise per player."""
+    """Yield (match, segment_id, v_true, ok, xn, yn); independent noise for every segment."""
     nfn, tag = NOISE[noise_name]
     for mid in matches:
-        for pi, (pid, x, y) in enumerate(load_match(data_root, mid)):
+        for si_all, (pid, si, f0, x, y) in enumerate(load_match(data_root, mid)):
             xs, ys = gt_positions(x, y, gt_kind)
             v_true = speed(xs, ys)
             ok = valid_mask(v_true)
-            if ok.sum() < 100:
+            if ok.sum() < 60:
                 continue
-            xn, yn = nfn(xs.copy(), ys.copy(), make_rng(mid, pi, tag))
-            yield mid, pid, v_true, ok, xn, yn
+            xn, yn = nfn(xs.copy(), ys.copy(), make_rng(mid, si_all, tag))
+            yield mid, f"{pid}:{si}", v_true, ok, xn, yn
 
 
 # ------------------------------- self tests --------------------------------
@@ -328,9 +343,13 @@ def tune(data_root, gt_kind, noise_name, objective, quick):
             for fam, p in cfgs:
                 fn = FAMILY_FN[fam]
                 rm, ma_, _ = score(v_true, speed(fn(xh, p), fn(yh, p)), ok)
-                rows.append((pre, fam, json.dumps(p, sort_keys=True), rm, ma_))
-    df = pd.DataFrame(rows, columns=["pre", "family", "params", "rmse", "mae"])
-    agg = df.groupby(["pre", "family", "params"], as_index=False)[["rmse", "mae"]].mean()
+                n_ok = int(ok.sum())
+                rows.append((pre, fam, json.dumps(p, sort_keys=True), rm ** 2 * n_ok, ma_ * n_ok, n_ok))
+    df = pd.DataFrame(rows, columns=["pre", "family", "params", "se", "ae", "n"])
+    agg = df.groupby(["pre", "family", "params"], as_index=False)[["se", "ae", "n"]].sum()
+    agg["rmse"] = np.sqrt(agg.se / agg.n)
+    agg["mae"] = agg.ae / agg.n
+    agg = agg[["pre", "family", "params", "rmse", "mae"]]
     best = {}
     for pre in ("none", "hampel"):
         best[pre] = {}
@@ -359,23 +378,31 @@ def evaluate(data_root, gt_kind, noise_name, best, quick):
             methods[f"{tag}{fam}(tuned)"] = (fam, p, pre)
     for fam, p in PAPER_DEFAULTS.items():
         methods[f"{fam}(paper-default)"] = (fam, p, "none")
-    per_match = []
-    bands = []
+    per_seg = []
+    band_rows = []
     tests = TEST_MATCHES[:1] if quick else TEST_MATCHES
     for mid, pid, v_true, ok, xn, yn in player_stream(data_root, tests, gt_kind, noise_name):
-        rm, ma_, r = score(v_true, speed(xn, yn), ok)
-        per_match.append((mid, "RAW(unfiltered)", rm, ma_, r))
-        bands.append((mid, "RAW(unfiltered)", band_mae(v_true, speed(xn, yn), ok)))
+        n_ok = int(ok.sum())
+        vr = speed(xn, yn)
+        rm, ma_, r = score(v_true, vr, ok)
+        per_seg.append((mid, "RAW(unfiltered)", rm ** 2 * n_ok, ma_ * n_ok, (r if np.isfinite(r) else 0.0) * n_ok, n_ok))
+        for bname, (se_, c_) in band_stats(v_true, vr, ok).items():
+            band_rows.append((mid, "RAW(unfiltered)", bname, se_, c_))
         for name, (fam, p, pre) in methods.items():
             xf, yf = apply_cfg(xn, yn, fam, p, pre)
             vf = speed(xf, yf)
             rm, ma_, r = score(v_true, vf, ok)
-            per_match.append((mid, name, rm, ma_, r))
-            bands.append((mid, name, band_mae(v_true, vf, ok)))
-    pm = pd.DataFrame(per_match, columns=["match", "method", "rmse", "mae", "r"])
-    pm = pm.groupby(["match", "method"], as_index=False).mean()
-    bd = pd.DataFrame([dict(match=m, method=n, **b) for m, n, b in bands])
-    bd = bd.groupby(["match", "method"], as_index=False).mean()
+            per_seg.append((mid, name, rm ** 2 * n_ok, ma_ * n_ok, (r if np.isfinite(r) else 0.0) * n_ok, n_ok))
+            for bname, (se_, c_) in band_stats(v_true, vf, ok).items():
+                band_rows.append((mid, name, bname, se_, c_))
+    ps = pd.DataFrame(per_seg, columns=["match", "method", "se", "ae", "re", "n"])
+    ps = ps.groupby(["match", "method"], as_index=False)[["se", "ae", "re", "n"]].sum()
+    pm = pd.DataFrame({"match": ps.match, "method": ps.method, "rmse": np.sqrt(ps.se / ps.n),
+                       "mae": ps.ae / ps.n, "r": ps.re / ps.n})
+    bdf = pd.DataFrame(band_rows, columns=["match", "method", "band", "sae", "cnt"])
+    bdf = bdf.groupby(["match", "method", "band"], as_index=False)[["sae", "cnt"]].sum()
+    bdf["mae"] = bdf.sae / bdf.cnt.where(bdf.cnt > 0)
+    bd = bdf.pivot_table(index=["match", "method"], columns="band", values="mae").reset_index()
     return pm, bd, methods
 
 
@@ -393,6 +420,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--gt", default="sg15", choices=["sg15", "gauss"])
     ap.add_argument("--objective", default="rmse", choices=["rmse", "mae"])
+    ap.add_argument("--noise", default="N1,N2", help="comma-separated subset of N1,N2")
     ap.add_argument("--data", default="data/archive_skillcorner")
     ap.add_argument("--out", default="outputs/v2")
     ap.add_argument("--quick", action="store_true", help="smoke test on 1 tuning + 1 test match")
@@ -408,7 +436,7 @@ def main():
         log.append(str(s))
 
     emit(f"benchmark_v2  gt={a.gt}  objective={a.objective}  tune={TUNE_MATCHES}  test={TEST_MATCHES}")
-    for noise_name in ("N1", "N2"):
+    for noise_name in a.noise.split(","):
         t0 = time.time()
         best, agg, ntune = tune(a.data, a.gt, noise_name, a.objective, a.quick)
         agg.to_csv(os.path.join(a.out, f"tuning_{a.gt}_{noise_name}.csv"), index=False)
@@ -429,7 +457,8 @@ def main():
         emit("\nIntensity-band MAE (m/s) on plausible frames, TEST matches:")
         bsum = bd.drop(columns="match").groupby("method").mean()
         emit(bsum.loc[summarise(pm).index].to_string())
-    with open(os.path.join(a.out, f"pipeline_output_v2_{a.gt}.txt"), "w") as f:
+    suffix = "" if a.noise == "N1,N2" else "_" + a.noise.replace(",", "")
+    with open(os.path.join(a.out, f"pipeline_output_v2_{a.gt}{suffix}.txt"), "w") as f:
         f.write("\n".join(log))
     emit(f"\nSaved to {a.out}/")
 
